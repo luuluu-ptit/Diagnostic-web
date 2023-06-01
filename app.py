@@ -17,8 +17,8 @@ classifier_heart = pickle.load(pickle_heart)
 pickle_diabetes = open("classifier_diabetes.pkl", "rb")
 classifier_diabetes = pickle.load(pickle_diabetes)
 
-classifier_malaria = load_model("malaria2.h5")
-classifier_tuberculosis = load_model("tuberculosis.h5")
+# classifier_malaria = load_model("malaria2.h5")
+# classifier_tuberculosis = load_model("tuberculosis.h5")
 
 
 # home page
@@ -81,77 +81,77 @@ def result():
 
 # MALARIA PREDICTION
 # function to preprocess the selected image and to predict it's class
-def predict_malaria(image_path, classifier_malaria):
-    print(image_path)
-    selected_image = image.load_img(image_path, target_size = (100, 100, 3))
-    selected_image = image.img_to_array(selected_image)
-    selected_image = selected_image/255
-    selected_image = np.expand_dims(selected_image, axis=0)
+# def predict_malaria(image_path, classifier_malaria):
+#     print(image_path)
+#     selected_image = image.load_img(image_path, target_size = (100, 100, 3))
+#     selected_image = image.img_to_array(selected_image)
+#     selected_image = selected_image/255
+#     selected_image = np.expand_dims(selected_image, axis=0)
 
-    predicted = classifier_malaria.predict(selected_image)
-    predicted = np.argmax(predicted, axis=1)
-    if predicted == 0:
-        predicted = "Cell is Parasitized"
-    else:
-        predicted = "Cell is Uninfected"
+#     predicted = classifier_malaria.predict(selected_image)
+#     predicted = np.argmax(predicted, axis=1)
+#     if predicted == 0:
+#         predicted = "Cell is Parasitized"
+#     else:
+#         predicted = "Cell is Uninfected"
 
-    return predicted
+#     return predicted
 
 
-# api for predict button
-@app.route("/predict_m", methods=["POST", "GET"])
-def predict_m():
-    if request.method == "POST":
-        # fetching the selected image named "image". This name was given in html <input type="file">
-        image_fetch = request.files["image"]
+# # api for predict button
+# @app.route("/predict_m", methods=["POST", "GET"])
+# def predict_m():
+#     if request.method == "POST":
+#         # fetching the selected image named "image". This name was given in html <input type="file">
+#         image_fetch = request.files["image"]
 
-        # saving the selected image in folder named "uploads"
-        base_path = os.path.dirname(__file__)
-        file_path = os.path.join(base_path, "uploads", secure_filename(image_fetch.filename))
-        image_fetch.save(file_path)
+#         # saving the selected image in folder named "uploads"
+#         base_path = os.path.dirname(__file__)
+#         file_path = os.path.join(base_path, "uploads", secure_filename(image_fetch.filename))
+#         image_fetch.save(file_path)
 
-        # Now using the new image path from "uploads" folder to predict the image class
-        result = predict_malaria(file_path, classifier_malaria)
-        print(result)
+#         # Now using the new image path from "uploads" folder to predict the image class
+#         result = predict_malaria(file_path, classifier_malaria)
+#         print(result)
 
-        return render_template('result_malaria.html', prediction_text=result)
+#         return render_template('result_malaria.html', prediction_text=result)
 
 
 # TUBERCULOSIS PREDICTION
-def predict_tuberculosis(image_path, classifier_tuberculosis):
-    print(image_path)
-    selected_image = image.load_img(image_path, target_size=(300, 300, 3))
-    selected_image = image.img_to_array(selected_image)
-    selected_image = selected_image / 255
-    selected_image = np.expand_dims(selected_image, axis=0)
+# def predict_tuberculosis(image_path, classifier_tuberculosis):
+#     print(image_path)
+#     selected_image = image.load_img(image_path, target_size=(300, 300, 3))
+#     selected_image = image.img_to_array(selected_image)
+#     selected_image = selected_image / 255
+#     selected_image = np.expand_dims(selected_image, axis=0)
 
-    predicted = classifier_tuberculosis.predict(selected_image)
-    predicted = np.argmax(predicted, axis=1)
-    if predicted == 0:
-        predicted = "There is no sign of Tuberculosis. Stay Safe...Stay Healthy!!!"
-    else:
-        predicted = "There can be a sign of Tuberculosis."
+#     predicted = classifier_tuberculosis.predict(selected_image)
+#     predicted = np.argmax(predicted, axis=1)
+#     if predicted == 0:
+#         predicted = "There is no sign of Tuberculosis. Stay Safe...Stay Healthy!!!"
+#     else:
+#         predicted = "There can be a sign of Tuberculosis."
 
-    return predicted
+#     return predicted
 
 
-# api for predict button
-@app.route("/predict_t", methods=["POST", "GET"])
-def predict_t():
-    if request.method == "POST":
-        # fetching the selected image named "image". This name was given in html <input type="file">
-        image_fetch = request.files["image"]
+# # api for predict button
+# @app.route("/predict_t", methods=["POST", "GET"])
+# def predict_t():
+#     if request.method == "POST":
+#         # fetching the selected image named "image". This name was given in html <input type="file">
+#         image_fetch = request.files["image"]
 
-        # saving the selected image in folder named "uploads"
-        base_path = os.path.dirname(__file__)
-        file_path = os.path.join(base_path, "uploads", secure_filename(image_fetch.filename))
-        image_fetch.save(file_path)
+#         # saving the selected image in folder named "uploads"
+#         base_path = os.path.dirname(__file__)
+#         file_path = os.path.join(base_path, "uploads", secure_filename(image_fetch.filename))
+#         image_fetch.save(file_path)
 
-        # Now using the new image path from "uploads" folder to predict the image class
-        result = predict_tuberculosis(file_path, classifier_tuberculosis)
-        print(result)
+#         # Now using the new image path from "uploads" folder to predict the image class
+#         result = predict_tuberculosis(file_path, classifier_tuberculosis)
+#         print(result)
 
-        return render_template('result_tuberculosis.html', prediction_text=result)
+#         return render_template('result_tuberculosis.html', prediction_text=result)
 
 
 @app.route('/uploads/<filename>')
